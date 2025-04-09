@@ -18,7 +18,7 @@ const EmailInput = () => {
     }
     setError("");
     try {
-      const response = await axios.post("https://creative-86-backend.onrender.com/subscribe", { email });
+      const response = await axios.post("https://creative-86-backend.onrender.com/subscribe", { email }, {withCredentials: true});
       console.log("Success:", response.data);
       setEmail(""); // Clear the input field on success
       alert("Subscription successful!"); // Show success message

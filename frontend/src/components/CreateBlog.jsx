@@ -89,6 +89,7 @@ const CreateBlog = () => {
             Authorization: `${token}`,
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
 

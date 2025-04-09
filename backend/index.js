@@ -92,10 +92,10 @@ app.post("/login", (req, res, next) => {
 
           // Store refresh token securely in an HTTP-only cookie
           res.cookie("refreshToken", refreshToken, {
-              httpOnly: true,
-              secure: process.env.NODE_ENV === "production",  // Use HTTPS in production
-              sameSite: "Strict",
-              maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Lax", // or 'None' if you're on different domains and using HTTPS
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
           });
 
           res.status(200).json({

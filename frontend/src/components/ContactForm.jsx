@@ -19,6 +19,7 @@ const ContactForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       });
       alert("Message sent successfully!");
       reset();
