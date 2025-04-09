@@ -93,10 +93,11 @@ app.post("/login", (req, res, next) => {
           // Store refresh token securely in an HTTP-only cookie
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "Lax", // or 'None' if you're on different domains and using HTTPS
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            secure: true, // for production
+            sameSite: "None", // if frontend is on different domain
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
           });
+          
 
           res.status(200).json({
               message: "Login successful!",
@@ -156,6 +157,21 @@ app.get("/verify-token", authenticateToken ,(req, res) => {
       if (err) return res.status(403).json({ error: "Invalid or expired token" });
 
       res.json({ user: decoded });
+  });
+});
+
+app.get("/refresh-token", (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) return res.status(401).json({ error: "Refresh token missing" });
+
+  jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ error: "Invalid refresh token" });
+
+    const user = { id: decoded.id, username: decoded.username }; // include any payload you use
+    const newAccessToken = jwt.sign(user, process.env.ACCESS_SECRET, { expiresIn: "15m" });
+
+    res.json({ accessToken: newAccessToken, user }); // optional: return user info too
   });
 });
 

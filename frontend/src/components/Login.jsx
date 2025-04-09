@@ -13,25 +13,58 @@ const Login = () => {
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const refreshAccessToken = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://creative-86-backend.onrender.com/refresh-token",
+        { withCredentials: true } // cookie sent here
+      );
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user)); // if backend sends it
+      setUser(data.user);
+    } catch (err) {
+      console.error("Could not refresh token", err);
+      setUser(null);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+    }
+  };
+  
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // ✅ LocalStorage se user wapas set karo
+    const token = localStorage.getItem("accessToken");
+  
+    if (storedUser && token) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      refreshAccessToken(); // ✅ if token missing, try to refresh using cookie
     }
-}, []);
+  }, []);
+  
 
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-      const { data } = await axios.post("https://creative-86-backend.onrender.com/login", formData, { withCredentials: true });
-      
-      localStorage.setItem("accessToken", data.accessToken);
-      setUser(data.user);
-      navigate("/home");
+    setLoading(true);
+    const { data } = await axios.post(
+      "https://creative-86-backend.onrender.com/login",
+      formData,
+      { withCredentials: true }
+    );
+
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Save user too
+    setUser(data.user);
+    navigate("/home");
   } catch (error) {
-      console.error("Login error:", error);
+    console.error("Login error:", error);
+    setError("Invalid credentials");
+  } finally {
+    setLoading(false);
   }
 };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
