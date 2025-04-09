@@ -25,8 +25,8 @@ const Login = () => {
     } catch (err) {
       console.error("Could not refresh token", err);
       setUser(null);
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("user");
+      // localStorage.removeItem("accessToken");
+      // localStorage.removeItem("user");
     }
   };
   
