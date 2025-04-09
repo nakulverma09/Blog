@@ -170,8 +170,9 @@ app.get("/refresh-token", (req, res) => {
 
     const user = { id: decoded.id, username: decoded.username }; // include any payload you use
     const newAccessToken = jwt.sign(user, process.env.ACCESS_SECRET, { expiresIn: "7d" });
+    const newRefreshToken = jwt.sign(user, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
-    res.json({ accessToken: newAccessToken, user }); // optional: return user info too
+    res.json({ accessToken: newAccessToken,newRefreshToken, user }); // optional: return user info too
   });
 });
 
