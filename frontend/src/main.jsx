@@ -12,6 +12,7 @@ import Technology from './pages/Technology.jsx';
 import Home from './pages/Home.jsx';
 import EditBlog from './components/EditBlog.jsx';
 import BlogPage from './components/BlogPage.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 import Miscellaneous from './pages/Miscellaneous.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
@@ -187,7 +188,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <MantineProvider withGlobalStyles withNormalizeCSS>
     <AppProvider>
+      <AuthProvider>
       <RouterProvider router={router} />
+      </AuthProvider>
     </AppProvider>
     </MantineProvider>
   </StrictMode>
