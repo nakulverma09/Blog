@@ -22,7 +22,7 @@ import InspirationAndPersonalDevelopment from './pages/InspirationAndPersonalDev
 import { AppProvider } from './context/context.jsx';
 import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
-import ProtectedRoute from './components/protectedRoute.jsx'; // 👈 Import ProtectedRoute component
+import ProtectedRoute from './components/ProtectedRoute.jsx'; // 👈 Import ProtectedRoute component
 import RedirectIfAuthenticated from './components/RedirectIfAuthenticated.jsx'; // 👈 Import RedirectIfAuthenticated component
 import CreateBlog from './components/CreateBlog.jsx';
 import EducationAndLearning from './pages/EducationAndLearning.jsx';
