@@ -33,7 +33,7 @@ const sessionOptions = {
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://blog-frontend-sa3d.onrender.com", credentials: true }));
 app.use(cookieParser());  // Enables reading HTTP-only cookies
 
 
