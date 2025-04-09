@@ -8,10 +8,10 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const User = require("./models/User"); // Assuming you have a User model defined
-const Email = require("./models/email"); // Assuming you have an Email model defined
-const Blog = require("./models/Blog")
-const Contact = require("./models/contact"); // Assuming you have a Contact model defined
+const User = require("./models/user.js"); // Assuming you have a User model defined
+const Email = require("./models/email.js"); // Assuming you have an Email model defined
+const Blog = require("./models/Blog.js")
+const Contact = require("./models/contact.js"); // Assuming you have a Contact model defined
 const authenticateToken = require("./middlewares/authMiddleware"); // Assuming you have a JWT authentication middleware
 
 dotenv.config();
