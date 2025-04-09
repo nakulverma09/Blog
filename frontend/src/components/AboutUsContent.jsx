@@ -1,5 +1,4 @@
 import React from "react";
-import logoIpsum from "../assets/logoIpsum.jpg";
 import TeamMember from "./TeamMember";
 import { Link } from "react-router-dom";
 
