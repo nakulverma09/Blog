@@ -33,7 +33,7 @@ const Signup = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/signup",
+        "https://creative-86-backend.onrender.com/signup",
         formData,
         { withCredentials: true }
       );

@@ -10,7 +10,7 @@ const NewsAndCurrentAffairs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/news-and-current-affairs");
+        const response = await axios.get("https://creative-86-backend.onrender.com/api/news-and-current-affairs");
         setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
       } catch (error) {
         console.error("Error fetching blogs:", error);

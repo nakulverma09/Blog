@@ -11,7 +11,7 @@ const CodingAndProjects = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/coding-and-projects"
+            "https://creative-86-backend.onrender.com/api/coding-and-projects"
           );
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
         } catch (error) {

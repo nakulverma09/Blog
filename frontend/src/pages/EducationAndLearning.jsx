@@ -11,7 +11,7 @@ const EducationAndLearning = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/education-and-learning"
+          "https://creative-86-backend.onrender.com/api/education-and-learning"
         );
         setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
       } catch (error) {

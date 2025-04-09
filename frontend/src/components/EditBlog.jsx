@@ -22,7 +22,7 @@ const EditBlog = () => {
     const fetchBlog = async () => {
       if (id) {
         try {
-          const res = await axios.get(`http://localhost:3000/api/blog/${id}`);
+          const res = await axios.get(`https://creative-86-backend.onrender.com/api/blog/${id}`);
           setFormData(res.data);
           setTagInput(res.data.tags.join(", ")); // Sync tag input with fetched tags
         } catch (error) {
@@ -113,7 +113,7 @@ const EditBlog = () => {
       const blogData = { ...formData, isPublished: true };
 
       const response = await axios.put(
-        `http://localhost:3000/edit/blog/${id}`,
+        `https://creative-86-backend.onrender.com/edit/blog/${id}`,
         blogData,
         {
           headers: {

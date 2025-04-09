@@ -11,7 +11,7 @@ const InspirationAndPersonalDevelopment = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/inspiration-and-personal-development"
+            "https://creative-86-backend.onrender.com/api/inspiration-and-personal-development"
           );
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
         } catch (error) {

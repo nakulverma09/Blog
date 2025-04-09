@@ -15,7 +15,7 @@ const ContactForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/contact", data, {
+      const response = await axios.post("https://creative-86-backend.onrender.com/contact", data, {
         headers: {
           "Content-Type": "application/json",
         },

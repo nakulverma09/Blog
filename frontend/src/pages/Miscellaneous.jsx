@@ -12,7 +12,7 @@ const Miscellaneous = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/miscellaneous"
+            "https://creative-86-backend.onrender.com/api/miscellaneous"
           );
           console.log(response.data.data); // Check the structure of the response
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }

@@ -11,7 +11,7 @@ const Finance = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/finance"
+            "https://creative-86-backend.onrender.com/api/finance"
           );
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
         } catch (error) {

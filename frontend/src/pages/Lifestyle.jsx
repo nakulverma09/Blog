@@ -11,7 +11,7 @@ const Lifestyle = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/lifestyle"
+            "https://creative-86-backend.onrender.com/api/lifestyle"
           );
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
         } catch (error) {

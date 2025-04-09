@@ -15,7 +15,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:3000/api/user/profile/${id}`
+          `https://creative-86-backend.onrender.com/api/user/profile/${id}`
         );
         setProfileData({ user: data.user, blogs: data.blogs });
       } catch (error) {

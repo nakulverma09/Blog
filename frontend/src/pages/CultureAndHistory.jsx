@@ -11,7 +11,7 @@ const CultureAndHistory = () => {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/culture-and-history"
+            "https://creative-86-backend.onrender.com/api/culture-and-history"
           );
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
         } catch (error) {

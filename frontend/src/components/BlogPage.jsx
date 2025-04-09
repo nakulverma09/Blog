@@ -14,7 +14,7 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/blog/${id}`);
+        const res = await axios.get(`https://creative-86-backend.onrender.com/api/blog/${id}`);
         setUser(res?.data?.user?._id);
         setBlog(res.data);
       } catch (err) {
@@ -32,7 +32,7 @@ const BlogPage = () => {
 
     setIsDeleting(true);
     try {
-      await axios.delete(`http://localhost:3000/api/blog/${blogId}`);
+      await axios.delete(`https://creative-86-backend.onrender.com/api/blog/${blogId}`);
       alert("Blog deleted successfully!");
 
       // Redirect to profile page
