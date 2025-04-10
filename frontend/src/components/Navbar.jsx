@@ -35,22 +35,47 @@ const Navbar = () => {
     verifyToken();
   }, []);
 
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post(
+  //       "https://creative-86-backend.onrender.com/logout",
+  //       {},
+  //       { withCredentials: true }
+  //     );
+  //     localStorage.removeItem("accessToken");
+  //     localStorage.removeItem("user");
+  //     Cookies.remove("refreshToken"); // Remove refresh token cookie
+  //     setUser(null);
+  //     navigate("/login");
+  //   } catch (error) {
+  //     console.error("Logout failed:", error);
+  //   }
+  // };
+
   const handleLogout = async () => {
+    const navigate = useNavigate();
+    const { setUser } = useContext(AuthContext); // if you're using context
+  
     try {
-      await axios.post(
-        "https://creative-86-backend.onrender.com/logout",
-        {},
-        { withCredentials: true }
-      );
+      await axios.post("https://creative-86-backend.onrender.com/logout", {}, {
+        withCredentials: true, // 👈 VERY IMPORTANT for cookies
+      });
+  
+      // ✅ Clear localStorage
       localStorage.removeItem("accessToken");
       localStorage.removeItem("user");
-      Cookies.remove("refreshToken"); // Remove refresh token cookie
+  
+      // ✅ Clear context state if used
       setUser(null);
+  
+      // ✅ Navigate to login
       navigate("/login");
+  
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
+
 
   const menuItems = [
     "Home",
