@@ -44,7 +44,7 @@ const Navbar = () => {
       );
       localStorage.removeItem("accessToken");
       localStorage.removeItem("user");
-      Cookies.remove("connect.sid");
+      Cookies.remove("refreshToken"); // Remove refresh token cookie
       setUser(null);
       navigate("/login");
     } catch (error) {
