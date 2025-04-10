@@ -15,20 +15,15 @@ const Login = () => {
 
   const refreshAccessToken = async () => {
     try {
-      const { data } = await axios.get(
-        "https://creative-86-backend.onrender.com/refresh-token",
-        { withCredentials: true } // cookie sent here
-      );
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("user", JSON.stringify(data.user)); // if backend sends it
-      setUser(data.user);
+      const res = await axios.post("/refresh-token", {}, { withCredentials: true });
+      localStorage.setItem("accessToken", res.data.accessToken);
+      return res.data.accessToken;
     } catch (err) {
-      console.error("Could not refresh token", err);
-      setUser(null);
-      // localStorage.removeItem("accessToken");
-      // localStorage.removeItem("user");
+      console.error("Refresh failed");
+      return null;
     }
   };
+  
   
 
   useEffect(() => {

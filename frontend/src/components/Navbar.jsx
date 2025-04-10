@@ -52,6 +52,7 @@ const Navbar = () => {
   //   }
   // };
 
+
   const handleLogout = async () => {  
     try {
       await axios.post("https://creative-86-backend.onrender.com/logout", {}, {
