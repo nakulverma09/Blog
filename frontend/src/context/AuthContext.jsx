@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshAccessToken = async () => {
     try {
-      const res = await axios.get("/refresh-token", {
+      const res = await axios.get("https://creative-86-backend.onrender.com/refresh-token", {
         withCredentials: true,
       });
       setAccessToken(res.data.accessToken);

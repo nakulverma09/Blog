@@ -87,8 +87,8 @@ app.post("/login", (req, res, next) => {
           if (err) return next(err);
 
           // Generate Access & Refresh Tokens
-          const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-          const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+          const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
+          const refreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
           // Store refresh token securely in an HTTP-only cookie
           res.cookie("refreshToken", refreshToken, {
@@ -172,7 +172,7 @@ app.get("/refresh-token", (req, res) => {
     const newAccessToken = jwt.sign(user, process.env.ACCESS_SECRET, { expiresIn: "7d" });
     const newRefreshToken = jwt.sign(user, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
-    res.json({ accessToken: newAccessToken,newRefreshToken, user }); // optional: return user info too
+    res.json({ accessToken: newAccessToken,refreshToken: newRefreshToken, user }); // optional: return user info too
   });
 });
 
