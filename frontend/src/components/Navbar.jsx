@@ -16,7 +16,7 @@ const Navbar = () => {
       console.log("Access Token:", token);
       if (!token) throw new Error("No token found");
 
-      const res = await axios.get("https://creative-86-backend.onrender.com/verify-token", {
+      const res = await axios.get("/verify-token", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -55,7 +55,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {  
     try {
-      await axios.post("https://creative-86-backend.onrender.com/logout", {}, {
+      await axios.post("/logout", {}, {
         withCredentials: true, // 👈 VERY IMPORTANT for cookies
       });
   
