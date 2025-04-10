@@ -52,10 +52,7 @@ const Navbar = () => {
   //   }
   // };
 
-  const handleLogout = async () => {
-    const navigate = useNavigate();
-    const { setUser } = useContext(AuthContext); // if you're using context
-  
+  const handleLogout = async () => {  
     try {
       await axios.post("https://creative-86-backend.onrender.com/logout", {}, {
         withCredentials: true, // 👈 VERY IMPORTANT for cookies
