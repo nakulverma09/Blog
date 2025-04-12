@@ -8,9 +8,10 @@ const BlogPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [blog, setBlog] = useState(null);
-  const [user, setUser] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const userId = localStorage.getItem("user")
+
+  const localUser = JSON.parse(localStorage.getItem("user")); // Assuming user is stored as an object
+  const localUserId = localUser?._id;
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -18,7 +19,6 @@ const BlogPage = () => {
         const res = await axios.get(
           `https://creative-86-backend.onrender.com/api/blog/${id}`
         );
-        setUser(res?.data?.user?._id);
         setBlog(res.data);
       } catch (err) {
         console.error("Error fetching blog:", err);
@@ -29,7 +29,6 @@ const BlogPage = () => {
   }, [id]);
 
   const handleDelete = async (blogId) => {
-    console.log("Deleting blog with ID:", blogId);
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this blog?"
     );
@@ -41,9 +40,7 @@ const BlogPage = () => {
         `https://creative-86-backend.onrender.com/api/blog/${blogId}`
       );
       alert("Blog deleted successfully!");
-
-      // Redirect to profile page
-      navigate(`/user/profile/${user}`); // Adjust based on your schema
+      navigate(`/user/profile/${localUserId}`);
     } catch (error) {
       console.error("Error deleting blog:", error);
       alert("Failed to delete the blog.");
@@ -52,7 +49,7 @@ const BlogPage = () => {
     }
   };
 
-  const handleEdit = (blogId) => {
+  const handleEdit = () => {
     navigate(`/edit/blog/${id}`);
   };
 
@@ -73,10 +70,10 @@ const BlogPage = () => {
     >
       {/* Edit/Delete Buttons */}
       <div className="flex justify-end mb-4 gap-2">
-        {user === userId._id && (
+        {localUserId === blog?.user?._id && (
           <>
             <button
-              onClick={() => handleEdit(blog._id)}
+              onClick={handleEdit}
               className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors text-sm"
             >
               Edit
