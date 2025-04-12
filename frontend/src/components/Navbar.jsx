@@ -114,7 +114,7 @@ const Navbar = () => {
       {/* 🟢 Auth Buttons (Desktop) */}
       <div className="hidden lg:flex gap-3 md:gap-4 w-[12%] mr-0">
         {console.log("User : ",user)}
-        {user ? (
+        {localStorage.getItem("user") ? (
           <button
             onClick={handleLogout}
             className="px-2 py-2 border-2 border-red-600 rounded-lg bg-red-700 text-white hover:bg-red-800 transition"
@@ -173,7 +173,7 @@ const Navbar = () => {
 
             {/* 🔹 Auth Buttons (Mobile) */}
             <div className="flex gap-4 mt-4">
-              {user ? (
+              {localStorage.getItem("user") ? (
                 <button
                   onClick={() => {
                     handleLogout();
