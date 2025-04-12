@@ -10,6 +10,7 @@ const BlogPage = () => {
   const [blog, setBlog] = useState(null);
   const [user, setUser] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const userId = localStorage.getItem("user")
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -63,9 +64,6 @@ const BlogPage = () => {
     );
   }
 
-  console.log("User: ", user)
-  console.log("Blog: ", blog)
-
   return (
     <motion.div
       className="max-w-3xl mx-auto p-6 my-10 bg-white rounded-lg shadow-md"
@@ -75,7 +73,7 @@ const BlogPage = () => {
     >
       {/* Edit/Delete Buttons */}
       <div className="flex justify-end mb-4 gap-2">
-        {user === id && (
+        {user === userId._id && (
           <>
             <button
               onClick={() => handleEdit(blog._id)}
