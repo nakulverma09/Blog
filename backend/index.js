@@ -8,6 +8,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const authRoutes = require("./routes/authRoutes.js")
 const User = require("./models/user.js"); // Assuming you have a User model defined
 const Email = require("./models/email.js"); // Assuming you have an Email model defined
 const Blog = require("./models/Blog.js")
@@ -55,26 +56,7 @@ app.get("/", (req, res) => {
   }
 });
 
-app.post("/signup", async (req, res, next) => {
-  try {
-    const { name, username, email, password } = req.body;
-    const newUser = new User({ name, username, email }); // Password include nahi karna
-    const registeredUser = await User.register(newUser, password); // Ye user create karega
-
-    req.login(registeredUser, (err) => {
-      if (err) return next(err);
-
-      res.status(201).json({
-        message: "User registered and logged in successfully",
-        user: { _id: registeredUser._id, name: registeredUser.name, username: registeredUser.username, email: registeredUser.email }, // Send only necessary fields
-        redirectUrl: "/home"
-      });
-    });
-  } catch (error) {
-    console.error("Signup Error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+app.post("/", authRoutes);
 
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
