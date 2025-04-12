@@ -14,7 +14,9 @@ const BlogPage = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`https://creative-86-backend.onrender.com/api/blog/${id}`);
+        const res = await axios.get(
+          `https://creative-86-backend.onrender.com/api/blog/${id}`
+        );
         setUser(res?.data?.user?._id);
         setBlog(res.data);
       } catch (err) {
@@ -27,12 +29,16 @@ const BlogPage = () => {
 
   const handleDelete = async (blogId) => {
     console.log("Deleting blog with ID:", blogId);
-    const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this blog?"
+    );
     if (!confirmDelete) return;
 
     setIsDeleting(true);
     try {
-      await axios.delete(`https://creative-86-backend.onrender.com/api/blog/${blogId}`);
+      await axios.delete(
+        `https://creative-86-backend.onrender.com/api/blog/${blogId}`
+      );
       alert("Blog deleted successfully!");
 
       // Redirect to profile page
@@ -57,6 +63,9 @@ const BlogPage = () => {
     );
   }
 
+  console.log("User: ", user)
+  console.log("Blog: ", blog)
+
   return (
     <motion.div
       className="max-w-3xl mx-auto p-6 my-10 bg-white rounded-lg shadow-md"
@@ -66,26 +75,34 @@ const BlogPage = () => {
     >
       {/* Edit/Delete Buttons */}
       <div className="flex justify-end mb-4 gap-2">
-        <button
-          onClick={() => handleEdit(blog._id)}
-          className="bg-blue-400 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-sm"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDelete(blog._id)}
-          disabled={isDeleting}
-          className={`bg-red-500 text-white px-3 py-1 rounded transition text-sm ${
-            isDeleting ? "opacity-50 cursor-not-allowed" : "hover:bg-red-600"
-          }`}
-        >
-          {isDeleting ? "Deleting..." : "Delete"}
-        </button>
+        {user === id && (
+          <>
+            <button
+              onClick={() => handleEdit(blog._id)}
+              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors text-sm"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDelete(blog._id)}
+              disabled={isDeleting}
+              className={`px-3 py-1 rounded text-white text-sm transition-colors ${
+                isDeleting
+                  ? "bg-red-500 opacity-50 cursor-not-allowed"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </button>
+          </>
+        )}
       </div>
 
       {/* Blog Header */}
       <h1 className="text-3xl p-4 font-bold mb-4 text-black bg-gray-200 rounded-md">
-        <b><i>{blog.title}</i></b>
+        <b>
+          <i>{blog.title}</i>
+        </b>
       </h1>
       <p className="text-sm text-gray-500 italic mb-6">
         Category: <span className="text-blue-500">{blog.category}</span>

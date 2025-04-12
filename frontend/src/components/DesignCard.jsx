@@ -41,12 +41,12 @@ const DesignCard = ({ blog }) => {
         /
         <span>{formattedDate}</span>
         /
-        <Link
+        {/* <Link
           to={`/blog/${blog._id}#comments`}
           className="hover:text-blue-700"
         >
           Leave a Comment
-        </Link>
+        </Link> */}
       </div>
 
       {/* Blog Preview */}
