@@ -21,7 +21,7 @@ const Navbar = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      console.log("User: ", user)
       console.log("Token valid ✅", res.data);
     } catch (error) {
       console.error("Session expired:", error);
@@ -113,6 +113,7 @@ const Navbar = () => {
 
       {/* 🟢 Auth Buttons (Desktop) */}
       <div className="hidden lg:flex gap-3 md:gap-4 w-[12%] mr-0">
+        {console.log("User : ",user)}
         {user ? (
           <button
             onClick={handleLogout}
