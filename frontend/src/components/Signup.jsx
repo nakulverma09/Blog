@@ -40,6 +40,8 @@ const Signup = () => {
 
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Save user in localStorage
+        localStorage.setItem("accessToken", data.accessToken); // Save access token in localStorage
+        
         setUser(data.user); // Set user in context
         login(data.user); // Call login function from context
         alert(data.message);
