@@ -1,4 +1,5 @@
 const User = require("../models/User"); // User model ko import karna
+
 exports.signup = async (req, res, next) => {
   try {
     const { name, username, email, password } = req.body;
