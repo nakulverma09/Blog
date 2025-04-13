@@ -9,11 +9,15 @@ const LocalStrategy = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const authRoutes = require("./routes/authRoutes.js")
+const subsRoutes = require("./routes/subsRoutes.js")
+const blogRoutes = require("./routes/blogRoutes.js")
+const tokenRoutes = require("./routes/tokenRoutes.js")
 const User = require("./models/user.js"); // Assuming you have a User model defined
 const Email = require("./models/email.js"); // Assuming you have an Email model defined
 const Blog = require("./models/Blog.js")
 const Contact = require("./models/contact.js"); // Assuming you have a Contact model defined
 const authenticateToken = require("./middlewares/authMiddleware"); // Assuming you have a JWT authentication middleware
+const { refreshToken } = require("./controllers/tokenControllers.js");
 
 dotenv.config();
 connectDB();
@@ -48,7 +52,13 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use("/", authRoutes);
+app.use("/", authRoutes); // Route to handle auth subscription
+app.use("/", subsRoutes); // Route to handle email subscription
+app.use("/", tokenRoutes);
+app.use("/", refreshToken); // Route to handle token refresh
+app.use("/contact", subsRoutes); // Route to handle contact form submission);
+app.use("/blog", blogRoutes); // Route to handle blog creation
+
 
 app.get("/", (req, res) => {
   try {
@@ -58,110 +68,8 @@ app.get("/", (req, res) => {
   }
 });
 
-// Route to handle email subscription
-app.post("/subscribe", async (req, res) => {
-  try {
-    const { email } = req.body;
 
-    // Check if email is already subscribed
-    const existingEmail = await Email.findOne({ email });
-    if (existingEmail) {
-      return res.status(400).json({ message: "Email is already subscribed" });
-    }
 
-    // Save new email
-    const newEmail = new Email({ email });
-    await newEmail.save();
-
-    res.status(201).json({ message: "Subscription successful" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-});
-
-app.get("/verify-token", authenticateToken ,(req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: "Unauthorized" });
-
-  const token = authHeader.split(" ")[1];
-
-  jwt.verify(token, process.env.ACCESS_SECRET, (err, decoded) => {
-      if (err) return res.status(403).json({ error: "Invalid or expired token" });
-
-      res.json({ user: decoded });
-  });
-});
-
-app.get("/refresh-token", (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
-
-  if (!refreshToken) return res.status(401).json({ error: "Refresh token missing" });
-
-  jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, decoded) => {
-    if (err) return res.status(403).json({ error: "Invalid refresh token" });
-
-    const user = { id: decoded.id, username: decoded.username }; // include any payload you use
-    const newAccessToken = jwt.sign(user, process.env.ACCESS_SECRET, { expiresIn: "7d" });
-    const newRefreshToken = jwt.sign(user, process.env.REFRESH_SECRET, { expiresIn: "7d" });
-
-    res.json({ accessToken: newAccessToken,refreshToken: newRefreshToken, user }); // optional: return user info too
-  });
-});
-
-app.post("/contact", async (req, res) => {
-  try {
-    const { firstName, lastName, email, message } = req.body;
-
-    // Check if all fields are present
-    if (!firstName || !lastName || !email || !message) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    // Save data correctly
-    const newContact = new Contact({ firstName, lastName, email, message });
-    await newContact.save();
-
-    res.status(201).json({ message: "Message sent successfully!" });
-  } catch (error) {
-    console.error("Error saving contact:", error);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
-  }
-});
-
-app.post("/blog", authenticateToken, async (req, res) => {
-  // console.log("Authenticated user:", req.user.userId); // Debugging
-  try {
-    const { title, category, content, tags } = req.body;
-    console.log("Authenticated user:", req.user); // Debugging
-    const userId = req.user.userId; // Ensure correct case
-  
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized: No user ID found" });
-    }
-
-    // Check if all fields are present
-    if (!title || !category || !content || !tags ) {
-      return res.status(400).json({ message: "All fields are required." });
-    }
-
-    // Save blog post to the database with isPublished set to true
-    const newBlogPost = new Blog({
-      title,
-      category,
-      content,
-      tags,
-      user: userId, // Associate blog with authenticated user
-      isPublished: true, // Automatically publish the blog
-    });
-
-    await newBlogPost.save();
-
-    res.status(201).json({ message: "Blog post created successfully!", blog: newBlogPost });
-  } catch (error) {
-    console.error("Error creating blog post from backend:", error);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
-  }
-});
 
 app.get("/api/technology", async (req, res) => {
   try {
