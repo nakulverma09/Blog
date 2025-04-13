@@ -1,4 +1,4 @@
-const User = require("../models/User"); // User model ko import karna
+const User = require("../models/User.js"); // User model ko import karna
 
 exports.signup = async (req, res, next) => {
   try {
