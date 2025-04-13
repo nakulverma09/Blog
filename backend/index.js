@@ -48,6 +48,8 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use("/", authRoutes);
+
 app.get("/", (req, res) => {
   try {
     res.send("Server is running... 🚀");
@@ -56,7 +58,6 @@ app.get("/", (req, res) => {
   }
 });
 
-app.post("/", authRoutes);
 
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
