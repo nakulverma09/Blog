@@ -30,7 +30,7 @@ exports.signup = async (req, res, next) => {
       });
     });
   } catch (error) {
-    console.error("Signup Error:", error);
+    console.error("Signup Error backend:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

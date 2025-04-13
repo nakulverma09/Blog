@@ -41,14 +41,14 @@ const Signup = () => {
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Save user in localStorage
         localStorage.setItem("accessToken", data.accessToken); // Save access token in localStorage
-        
+
         setUser(data.user); // Set user in context
         login(data.user); // Call login function from context
         alert(data.message);
         navigate(data.redirectUrl); // Navigate to home
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.error("Signup error frontend:", error);
       setError(error.response?.data?.error || "Signup failed. Try again.");
     } finally {
       setLoading(false);
