@@ -36,3 +36,50 @@ exports.signup = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+exports.login = async (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+      if (err) return next(err);
+      if (!user) {
+          return res.status(401).json({ error: info?.message || "Invalid credentials" });
+      }
+
+      req.login(user, { session: false }, (err) => {  
+          if (err) return next(err);
+
+          // Generate Access & Refresh Tokens
+          const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
+          const refreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
+
+          // Store refresh token securely in an HTTP-only cookie
+          res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true, // ✅ important for https
+            sameSite: "None", // ✅ important for cross-domain
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+          });    
+
+          res.status(200).json({
+              message: "Login successful!",
+              user: {
+                  _id: user._id,
+                  name: user.name,
+                  username: user.username,
+                  email: user.email
+              },
+              accessToken,
+              redirectUrl: "/home"
+          });
+      });
+  })(req, res, next);
+}
+
+exports.logout = async (req, res) => {
+  res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+  });
+
+  res.status(200).json({ message: "Logout successful!" });
+}
