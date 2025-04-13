@@ -6,3 +6,5 @@ const authenticateToken = require('../middlewares/authMiddleware.js');
 router.use(authenticateToken); // Apply authentication middleware to all routes in this file
 router.get('/verify-token', verifyToken); // Handle GET requests to /token
 router.get('/refresh-token', refreshToken); // Handle GET requests to /token/refresh
+
+module.exports = router;
