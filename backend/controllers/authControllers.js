@@ -1,4 +1,6 @@
 const { session } = require("passport");
+const jwt = require("jsonwebtoken");
+const passport = require("passport"); // Passport ko import karna
 const User = require("../models/user.js"); // User model ko import karna
 
 exports.signup = async (req, res, next) => {
