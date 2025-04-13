@@ -10,9 +10,9 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const authRoutes = require("./routes/authRoutes.js")
 const User = require("./models/User.js"); // Assuming you have a User model defined
-const Email = require("./models/email.js"); // Assuming you have an Email model defined
+const Email = require("./models/Email.js"); // Assuming you have an Email model defined
 const Blog = require("./models/Blog.js")
-const Contact = require("./models/contact.js"); // Assuming you have a Contact model defined
+const Contact = require("./models/Contact.js"); // Assuming you have a Contact model defined
 const authenticateToken = require("./middlewares/authMiddleware"); // Assuming you have a JWT authentication middleware
 
 dotenv.config();
