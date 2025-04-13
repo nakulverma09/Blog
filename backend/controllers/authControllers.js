@@ -1,10 +1,10 @@
-import User, { register } from "../models/User.js"; // User model ko import karna
+const User = require("../models/User.js"); // User model ko import karna
 
-export async function signup(req, res, next) {
+exports.signup = async (req, res, next) => {
   try {
     const { name, username, email, password } = req.body;
     const newUser = new User({ name, username, email }); // Password include nahi karna
-    const registeredUser = await register(newUser, password); // Ye user create karega
+    const registeredUser = await User.register(newUser, password); // Ye user create karega
 
     req.login(registeredUser, (err) => {
       if (err) return next(err);
@@ -18,4 +18,5 @@ export async function signup(req, res, next) {
   } catch (error) {
     console.error("Signup Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
-  }}
+  }
+}
