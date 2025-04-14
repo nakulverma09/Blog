@@ -4,6 +4,8 @@ const { technology, educationAndLearning, lifestyle, finance, entertainment, new
     inspirationAndPersonalDevelopment,cultureAndHistory, codingAndProjects, miscellaneous
  } = require('../controllers/categoryControllers')
 
+
+router.use(verifyToken); // Apply authentication middleware to all routes in this file
 router.get('/technology', technology);
 router.get('/education-and-learning', educationAndLearning);
 router.get('/lifestyle', lifestyle);
