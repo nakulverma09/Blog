@@ -8,9 +8,14 @@ const NewsAndCurrentAffairs = () => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // or however you store it
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://creative-86-backend.onrender.com/api/news-and-current-affairs");
+        const response = await axios.get("https://creative-86-backend.onrender.com/api/news-and-current-affairs",{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
       } catch (error) {
         console.error("Error fetching blogs:", error);

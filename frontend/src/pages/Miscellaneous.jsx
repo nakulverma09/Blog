@@ -9,10 +9,16 @@ const Miscellaneous = () => {
   const [user, setUser] = useState(null);
   
     useEffect(() => {
+      const token = localStorage.getItem("accessToken"); // or however you store it
+
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            "https://creative-86-backend.onrender.com/api/miscellaneous"
+            "https://creative-86-backend.onrender.com/api/miscellaneous",{
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
           );
           console.log(response.data.data); // Check the structure of the response
           setBlogs(response.data.data); // Make sure your backend sends { data: [...] }
