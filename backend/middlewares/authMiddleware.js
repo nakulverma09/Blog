@@ -6,7 +6,7 @@ function authenticateToken(req, res, next) {
   
   if (!token) return res.sendStatus(403); // <- this is what you're seeing
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(token, process.env.ACCESS_SECRET, (err, user) => {
     if (err) {
       console.log(err);
       return res.sendStatus(403);
