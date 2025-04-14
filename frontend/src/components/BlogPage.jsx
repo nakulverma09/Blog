@@ -40,7 +40,7 @@ const BlogPage = () => {
         `https://creative-86-backend.onrender.com/api/blog/${blogId}`
       );
       alert("Blog deleted successfully!");
-      navigate(`/user/profile/${localUserId}`);
+      navigate(`/api/user/profile/${localUserId}`);
     } catch (error) {
       console.error("Error deleting blog:", error);
       alert("Failed to delete the blog.");

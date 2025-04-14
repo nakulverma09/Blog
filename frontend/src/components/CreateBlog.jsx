@@ -82,7 +82,7 @@ const CreateBlog = () => {
       const blogData = { ...formData, isPublished: true };
 
       const response = await axios.post(
-        "https://creative-86-backend.onrender.com/blog",
+        "https://creative-86-backend.onrender.com/api/blog",
         blogData,
         {
           headers: {

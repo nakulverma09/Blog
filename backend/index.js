@@ -55,15 +55,15 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use("/", authRoutes); // Route to handle auth subscription
-app.use("/", subsRoutes); // Route to handle email subscription
+app.use("/", subsRoutes); // Route to handle email, contact subscription
 app.use("/", tokenRoutes);
 app.use("/", refreshToken); // Route to handle token refresh
-app.use("/contact", subsRoutes); // Route to handle contact form submission);
-app.use("/blog", blogRoutes); // Route to handle blog creation
+// app.use("/", subsRoutes); // Route to handle contact form submission);
+// app.use("/blog", blogRoutes); // Route to handle blog creation
 app.use("/api", categoryRoutes); //Route to handle category 
 app.use("/api", userRoutes); //Route to handle user data
 app.use("/api", blogRoutes); //Route to handle Blog crud operation
-app.use("/", blogRoutes)
+// app.use("/", blogRoutes)
 
 app.get("/", (req, res) => {
   try {

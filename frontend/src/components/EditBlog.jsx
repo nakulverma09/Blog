@@ -113,7 +113,7 @@ const EditBlog = () => {
       const blogData = { ...formData, isPublished: true };
 
       const response = await axios.put(
-        `https://creative-86-backend.onrender.com/edit/blog/${id}`,
+        `https://creative-86-backend.onrender.com/api/edit/blog/${id}`,
         blogData,
         {
           headers: {

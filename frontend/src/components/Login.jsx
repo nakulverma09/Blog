@@ -15,7 +15,7 @@ const Login = () => {
 
   const refreshAccessToken = async () => {
     try {
-      const res = await axios.post("/refresh-token", {}, { withCredentials: true });
+      const res = await axios.post("https://creative-86-backend.onrender.com/refresh-token", {}, { withCredentials: true });
       localStorage.setItem("accessToken", res.data.accessToken);
       return res.data.accessToken;
     } catch (err) {
