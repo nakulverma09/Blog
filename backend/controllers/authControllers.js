@@ -2,12 +2,33 @@ const { session } = require("passport");
 const jwt = require("jsonwebtoken");
 const passport = require("passport"); // Passport ko import karna
 const User = require("../models/user.js"); // User model ko import karna
+const sendVerificationEmail = require('../utils/mail.js'); // Email utility ko import karna
+
+exports.verifyEmail = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_SECRET); // Token ko verify karna
+    const user = await User.findById(decoded.id);
+
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.isVerified = true;
+    await user.save();
+
+    res.redirect(`${process.env.BASE_URL}/home`); // your frontend route
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid or expired token' });
+  }
+};
 
 exports.signup = async (req, res, next) => {
   try {
     const { name, username, email, password } = req.body;
     const newUser = new User({ name, username, email }); // Password include nahi karna
     const registeredUser = await User.register(newUser, password); // Ye user create karega
+
+    await sendVerificationEmail(email, token); // Email bhejne ke liye utility function call karega
 
     req.login(registeredUser, { session: false }, (err) => {
       if (err) return next(err);
