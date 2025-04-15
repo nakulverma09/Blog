@@ -31,6 +31,7 @@ import Lifestyle from './pages/Lifestyle.jsx';
 import Finance from './pages/Finance.jsx';
 import Entertainment from './pages/Entertainment.jsx';
 import Profile from './components/Profile.jsx';
+import VerifyEmail from './components/VerifyEmail.jsx';
 
 const router = createBrowserRouter([
   {
@@ -180,6 +181,12 @@ const router = createBrowserRouter([
           </RedirectIfAuthenticated>
         ),
       },
+      {
+        path: "/verify-email/:token",
+        element: (
+          <VerifyEmail/>
+        ),
+      }
     ],
   },
 ]);

@@ -16,6 +16,7 @@ exports.verifyEmail = async (req, res) => {
     user.isVerified = true;
     await user.save();
 
+    res.json({ message: "Email verified successfully!" });
     res.redirect(`${process.env.BASE_URL}/home`); // your frontend route
   } catch (err) {
     res.status(400).json({ message: 'Invalid or expired token' });
