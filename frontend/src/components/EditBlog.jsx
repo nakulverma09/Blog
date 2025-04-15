@@ -19,10 +19,15 @@ const EditBlog = () => {
   const [tagInput, setTagInput] = useState(""); // Separate tag input state
 
   useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // or however you store it
     const fetchBlog = async () => {
       if (id) {
         try {
-          const res = await axios.get(`https://creative-86-backend.onrender.com/api/blog/${id}`);
+          const res = await axios.get(`https://creative-86-backend.onrender.com/api/blog/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           setFormData(res.data);
           setTagInput(res.data.tags.join(", ")); // Sync tag input with fetched tags
         } catch (error) {

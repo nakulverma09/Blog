@@ -34,6 +34,7 @@ const BlogPage = () => {
   }, [id]);
 
   const handleDelete = async (blogId) => {
+    const token = localStorage.getItem("accessToken"); // or however you store it
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this blog?"
     );
@@ -42,7 +43,11 @@ const BlogPage = () => {
     setIsDeleting(true);
     try {
       await axios.delete(
-        `https://creative-86-backend.onrender.com/api/blog/${blogId}`
+        `https://creative-86-backend.onrender.com/api/blog/${blogId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       alert("Blog deleted successfully!");
       navigate(`/api/user/profile/${localUserId}`);
