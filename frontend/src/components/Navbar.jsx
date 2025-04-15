@@ -13,7 +13,6 @@ const Navbar = () => {
   const verifyToken = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      console.log("Access Token:", token);
       if (!token) throw new Error("No token found");
 
       const res = await axios.get("https://creative-86-backend.onrender.com/verify-token", {
@@ -21,8 +20,6 @@ const Navbar = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("User: ", user)
-      console.log("Token valid ✅", res.data);
     } catch (error) {
       console.error("Session expired:", error);
       localStorage.removeItem("accessToken");
