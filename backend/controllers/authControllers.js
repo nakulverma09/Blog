@@ -35,6 +35,9 @@ exports.signup = async (req, res, next) => {
       { expiresIn: "7d" }
     );
 
+    console.log(emailToken);
+    // ✅ Save the email token to the user document
+
     // ✅ Send verification email
     await sendVerificationEmail(email, emailToken);
 
@@ -64,6 +67,7 @@ exports.signup = async (req, res, next) => {
       });
     });
   } catch (error) {
+    console.log(error)
     console.error("Signup Error backend:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
