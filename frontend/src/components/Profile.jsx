@@ -11,11 +11,16 @@ const Profile = () => {
 
   useEffect(() => {
     if (!id) return;
+    const token = localStorage.getItem("accessToken"); // or however you store it
 
     const fetchProfile = async () => {
       try {
         const { data } = await axios.get(
-          `https://creative-86-backend.onrender.com/api/user/profile/${id}`
+          `https://creative-86-backend.onrender.com/api/user/profile/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         setProfileData({ user: data.user, blogs: data.blogs });
       } catch (error) {
