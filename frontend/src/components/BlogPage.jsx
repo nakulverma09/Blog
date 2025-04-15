@@ -50,7 +50,7 @@ const BlogPage = () => {
         }
       );
       alert("Blog deleted successfully!");
-      navigate(`/api/user/profile/${localUserId}`);
+      navigate(`/user/profile/${localUserId}`);
     } catch (error) {
       console.error("Error deleting blog:", error);
       alert("Failed to delete the blog.");
