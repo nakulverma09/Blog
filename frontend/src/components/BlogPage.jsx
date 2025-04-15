@@ -14,10 +14,15 @@ const BlogPage = () => {
   const localUserId = localUser?._id;
 
   useEffect(() => {
+    const token = localStorage.getItem("accessToken"); // or however you store it
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
-          `https://creative-86-backend.onrender.com/api/blog/${id}`
+          `https://creative-86-backend.onrender.com/api/blog/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         setBlog(res.data);
       } catch (err) {
