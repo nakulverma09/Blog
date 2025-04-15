@@ -29,9 +29,9 @@ const sessionOptions = {
   secret: process.env.SESSION_SECRET || "mysecretkey",
   resave: false,
   saveUninitialized: false, // 🔥 Set this to false to prevent empty sessions
-  cookie: { 
-    secure: false, 
-    httpOnly: true, 
+  cookie: {
+    secure: false,
+    httpOnly: true,
     sameSite: "Lax", // 🔥 Required for cross-origin cookies
     maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
   },
@@ -40,7 +40,11 @@ const sessionOptions = {
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: "https://blog-frontend-sa3d.onrender.com", credentials: true }));
+app.use(cors({
+  origin: "https://blog-frontend-sa3d.onrender.com", 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(cookieParser());  // Enables reading HTTP-only cookies
 
 
