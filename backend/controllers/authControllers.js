@@ -25,38 +25,50 @@ exports.verifyEmail = async (req, res) => {
 exports.signup = async (req, res, next) => {
   try {
     const { name, username, email, password } = req.body;
-    const newUser = new User({ name, username, email }); // Password include nahi karna
-    const registeredUser = await User.register(newUser, password); // Ye user create karega
+    const newUser = new User({ name, username, email });
+    const registeredUser = await User.register(newUser, password);
 
-    await sendVerificationEmail(email, token); // Email bhejne ke liye utility function call karega
+    // ✅ Create a token for email verification
+    const emailToken = jwt.sign(
+      { id: registeredUser._id },
+      process.env.JWT_EMAIL_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // ✅ Send verification email
+    await sendVerificationEmail(email, emailToken);
 
     req.login(registeredUser, { session: false }, (err) => {
       if (err) return next(err);
 
-      // Generate Access & Refresh Tokens
       const accessToken = jwt.sign({ userId: registeredUser._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
       const refreshToken = jwt.sign({ userId: registeredUser._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
-      // Store refresh token securely in an HTTP-only cookie
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: true, // ✅ important for https
-        sameSite: "None", // ✅ important for cross-domain
+        secure: true,
+        sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
       res.status(201).json({
         message: "User registered and logged in successfully",
-        user: { _id: registeredUser._id, name: registeredUser.name, username: registeredUser.username, email: registeredUser.email }, // Send only necessary fields
-        accessToken: accessToken,
-        redirectUrl: "/home"
+        user: {
+          _id: registeredUser._id,
+          name: registeredUser.name,
+          username: registeredUser.username,
+          email: registeredUser.email,
+        },
+        accessToken,
+        redirectUrl: "/home",
       });
     });
   } catch (error) {
     console.error("Signup Error backend:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-}
+};
+
 
 exports.login = async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
