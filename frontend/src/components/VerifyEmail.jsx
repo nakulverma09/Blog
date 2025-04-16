@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Login from './Login';
 
 const VerifyEmail = () => {
   const { token } = useParams();
@@ -22,7 +23,9 @@ const VerifyEmail = () => {
     verify();
   }, [token, navigate]);
 
-  return <div>{message}</div>;
+  return <div>
+    <Login/>
+  </div>;
 };
 
 export default VerifyEmail;
