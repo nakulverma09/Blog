@@ -38,6 +38,8 @@ const Signup = () => {
         { withCredentials: true }
       );
 
+      alert(data.message);
+
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Save user in localStorage
         localStorage.setItem("accessToken", data.accessToken); // Save access token in localStorage
