@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 const sendVerificationEmail = (email, token) => {
   try {
-    const url = `${process.env.BASE_BACKEND_URL}/verify-email/${token}`;
+    const url = `${process.env.BASE_URL}/verify-email/${token}`;
 
   const mailOptions = {
     from: `"Creative 86" <${process.env.EMAIL_USER}>`,
