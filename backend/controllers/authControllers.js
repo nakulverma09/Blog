@@ -40,7 +40,8 @@ exports.signup = async (req, res, next) => {
     // ✅ Save the email token to the user document
 
     // ✅ Send verification email
-    await sendVerificationEmail(email, emailToken);
+    const isEmailVerify = await sendVerificationEmail(email, emailToken);
+    console.log("Is email verify: ", isEmailVerify);
 
     req.login(registeredUser, { session: false }, (err) => {
       if (err) return next(err);
