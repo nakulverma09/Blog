@@ -81,10 +81,10 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+exports.login = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
-    
+
     console.log("Login Attempt:", req.body);
     console.log("User:", user);
     console.log("Info:", info);
@@ -92,6 +92,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ error: info?.message || "Invalid credentials" });
     }
+
     if (!user.isVerified) {
       return res.status(403).json({ message: "Please verify your email first." });
     }
@@ -103,11 +104,11 @@ exports.login = async (req, res, next) => {
       const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
       const refreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
-      // Store refresh token securely in an HTTP-only cookie
+      // Store refresh token in secure HTTP-only cookie
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: true, // ✅ important for https
-        sameSite: "None", // ✅ important for cross-domain
+        secure: true,
+        sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
@@ -124,7 +125,8 @@ exports.login = async (req, res, next) => {
       });
     });
   })(req, res, next);
-}
+};
+
 
 exports.logout = async (req, res) => {
   res.clearCookie("refreshToken", {
