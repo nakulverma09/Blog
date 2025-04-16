@@ -17,7 +17,7 @@ exports.verifyEmail = async (req, res) => {
     await user.save();
 
     res.json({ message: "Email verified successfully!" });
-    res.redirect(`${process.env.BASE_URL}/home`); // your frontend route
+    res.redirect(`${process.env.BASE_URL}/login?verified=true`);
   } catch (err) {
     res.status(400).json({ message: 'Invalid or expired token' });
   }
@@ -36,37 +36,35 @@ exports.signup = async (req, res, next) => {
       { expiresIn: "7d" }
     );
 
-    console.log(emailToken);
     // ✅ Save the email token to the user document
 
     // ✅ Send verification email
-    const isEmailVerify = await sendVerificationEmail(email, emailToken);
-    console.log("Is email verify: ", isEmailVerify);
+    await sendVerificationEmail(email, emailToken);
 
-    req.login(registeredUser, { session: false }, (err) => {
-      if (err) return next(err);
+    // req.login(registeredUser, { session: false }, (err) => {
+    //   if (err) return next(err);
 
-      const accessToken = jwt.sign({ userId: registeredUser._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
-      const refreshToken = jwt.sign({ userId: registeredUser._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
+    //   const accessToken = jwt.sign({ userId: registeredUser._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
+    //   const refreshToken = jwt.sign({ userId: registeredUser._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
+    //   res.cookie("refreshToken", refreshToken, {
+    //     httpOnly: true,
+    //     secure: true,
+    //     sameSite: "None",
+    //     maxAge: 7 * 24 * 60 * 60 * 1000,
+    //   });
 
       res.status(201).json({
-        message: "User registered and logged in successfully",
-        user: {
-          _id: registeredUser._id,
-          name: registeredUser.name,
-          username: registeredUser.username,
-          email: registeredUser.email,
-        },
-        accessToken,
-        redirectUrl: "/home",
-      });
+        message: "User registered. Please verify your email before logging in.",
+        // user: {
+        //   _id: registeredUser._id,
+        //   name: registeredUser.name,
+        //   username: registeredUser.username,
+        //   email: registeredUser.email,
+        // },
+        // accessToken,
+        // redirectUrl: "/home",
+      // });
     });
   } catch (error) {
     console.log(error)
@@ -82,6 +80,9 @@ exports.login = async (req, res, next) => {
       if (!user) {
           return res.status(401).json({ error: info?.message || "Invalid credentials" });
       }
+      if (!user.isVerified) {
+        return res.status(403).json({ message: "Please verify your email first." });
+      }      
 
       req.login(user, { session: false }, (err) => {  
           if (err) return next(err);
