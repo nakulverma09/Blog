@@ -37,6 +37,10 @@ exports.signup = async (req, res, next) => {
     const newUser = new User({ name, username, email });
     const registeredUser = await User.register(newUser, password);
 
+    //send a alert message to notify verification email is send in given email id
+    alert("Please check email Id and verify a link.....");
+
+
     // ✅ Create a token for email verification
     const emailToken = jwt.sign(
       { id: registeredUser._id },

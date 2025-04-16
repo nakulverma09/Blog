@@ -59,8 +59,6 @@ const handleSubmit = async (e) => {
       { withCredentials: true }
     );
 
-    console.log("Login response:", data);
-    console.log("Saving user to localStorage:", data.user);
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Save user too
     setUser(data.user);

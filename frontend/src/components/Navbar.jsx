@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AppContext } from "../context/context";
-import Cookies from "js-cookie";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 
@@ -110,7 +109,6 @@ const Navbar = () => {
 
       {/* 🟢 Auth Buttons (Desktop) */}
       <div className="hidden lg:flex gap-3 md:gap-4 w-[12%] mr-0">
-        {console.log("User : ",user)}
         {localStorage.getItem("accessToken") ? (
           <button
             onClick={handleLogout}
