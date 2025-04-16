@@ -5,28 +5,29 @@ const User = require("../models/user.js"); // User model ko import karna
 const sendVerificationEmail = require('../utils/mail.js'); // Email utility ko import karna
 
 exports.verifyEmail = async (req, res) => {
-  try {
-    const { token } = req.params;
+  const token = req.params.token;
 
+  try {
     const decoded = jwt.verify(token, process.env.JWT_EMAIL_SECRET);
     const user = await User.findById(decoded.id);
 
-    if (!user) return res.status(404).send("User not found");
+    if (!user) {
+      return res.redirect(`${process.env.CLIENT_URL}/login?verified=fail`);
+    }
 
     if (user.isVerified) {
-      return res.redirect(`${process.env.FRONTEND_URL}/login?verified=already`);
+      return res.redirect(`${process.env.CLIENT_URL}/login?verified=already`);
     }
 
     user.isVerified = true;
     await user.save();
 
-    return res.redirect(`${process.env.FRONTEND_URL}/login?verified=true`);
+    return res.redirect(`${process.env.CLIENT_URL}/login?verified=true`);
   } catch (err) {
-    console.error("Email verification error:", err.message);
-    return res.redirect(`${process.env.FRONTEND_URL}/login?verified=fail`);
+    console.error("Verification error:", err.message);
+    return res.redirect(`${process.env.CLIENT_URL}/login?verified=fail`);
   }
 };
-
 
 exports.signup = async (req, res, next) => {
   try {
@@ -77,7 +78,6 @@ exports.signup = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 exports.login = async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
