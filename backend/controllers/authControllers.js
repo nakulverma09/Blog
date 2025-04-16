@@ -89,10 +89,6 @@ exports.login = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
 
-    console.log("Login Attempt:", req.body);
-    console.log("User:", user);
-    console.log("Info:", info);
-
     if (!user) {
       return res.status(401).json({ error: info?.message || "Invalid credentials" });
     }
