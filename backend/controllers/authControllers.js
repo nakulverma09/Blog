@@ -12,20 +12,20 @@ exports.verifyEmail = async (req, res) => {
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return res.redirect(`${process.env.CLIENT_URL}/login?verified=fail`);
+      return res.redirect(`${process.env.BASE_URL}/login?verified=fail`);
     }
 
     if (user.isVerified) {
-      return res.redirect(`${process.env.CLIENT_URL}/login?verified=already`);
+      return res.redirect(`${process.env.BASE_URL}/login?verified=already`);
     }
 
     user.isVerified = true;
     await user.save();
 
-    return res.redirect(`${process.env.CLIENT_URL}/login?verified=true`);
+    return res.redirect(`${process.env.BASE_URL}/login?verified=true`);
   } catch (err) {
     console.error("Verification error:", err.message);
-    return res.redirect(`${process.env.CLIENT_URL}/login?verified=fail`);
+    return res.redirect(`${process.env.BASE_URL}/login?verified=fail`);
   }
 };
 
