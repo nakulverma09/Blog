@@ -10,7 +10,6 @@ const VerifyEmail = () => {
   useEffect(() => {
     const verify = async () => {
       try {
-        alert("Please check email id, check verification link...");
         const res = await axios.get(`https://creative-86-backend.onrender.com/verify-email/${token}`);
         setMessage('Email verified successfully!');
         setTimeout(() => {
