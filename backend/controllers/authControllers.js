@@ -6,11 +6,9 @@ const sendVerificationEmail = require('../utils/mail.js'); // Email utility ko i
 
 exports.verifyEmail = async (req, res) => {
   const token = req.params.token;
-  console.log("verify mail: ", token)
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_EMAIL_SECRET);
-    console.log("decoded token: ", decoded)
     const user = await User.findById(decoded.id);
 
     if (!user) {
@@ -21,10 +19,12 @@ exports.verifyEmail = async (req, res) => {
       return res.redirect(`${process.env.BASE_URL}/login?verified=already`);
     }
 
-    user.isVerified = true;
-    await user.save();
+    if (user && !user.isVerified) {
+      user.isVerified = true;
+      await user.save();
+      return res.redirect(`${process.env.BASE_URL}/login?verified=true`);
+    }
 
-    return res.redirect(`${process.env.BASE_URL}/login?verified=true`);
   } catch (err) {
     console.error("Verification error:", err.message);
     return res.redirect(`${process.env.BASE_URL}/login?verified=fail`);
@@ -62,16 +62,16 @@ exports.signup = async (req, res, next) => {
     //     maxAge: 7 * 24 * 60 * 60 * 1000,
     //   });
 
-      res.status(201).json({
-        message: "User registered. Please verify your email before logging in.",
-        // user: {
-        //   _id: registeredUser._id,
-        //   name: registeredUser.name,
-        //   username: registeredUser.username,
-        //   email: registeredUser.email,
-        // },
-        // accessToken,
-        // redirectUrl: "/home",
+    res.status(201).json({
+      message: "User registered. Please verify your email before logging in.",
+      // user: {
+      //   _id: registeredUser._id,
+      //   name: registeredUser.name,
+      //   username: registeredUser.username,
+      //   email: registeredUser.email,
+      // },
+      // accessToken,
+      // redirectUrl: "/home",
       // });
     });
   } catch (error) {
@@ -83,49 +83,49 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      return res.status(401).json({ error: info?.message || "Invalid credentials" });
+    }
+    if (!user.isVerified) {
+      return res.status(403).json({ message: "Please verify your email first." });
+    }
+
+    req.login(user, { session: false }, (err) => {
       if (err) return next(err);
-      if (!user) {
-          return res.status(401).json({ error: info?.message || "Invalid credentials" });
-      }
-      if (!user.isVerified) {
-        return res.status(403).json({ message: "Please verify your email first." });
-      }      
 
-      req.login(user, { session: false }, (err) => {  
-          if (err) return next(err);
+      // Generate Access & Refresh Tokens
+      const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
+      const refreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
 
-          // Generate Access & Refresh Tokens
-          const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_SECRET, { expiresIn: "7d" });
-          const refreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
-
-          // Store refresh token securely in an HTTP-only cookie
-          res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-            secure: true, // ✅ important for https
-            sameSite: "None", // ✅ important for cross-domain
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-          });    
-
-          res.status(200).json({
-              message: "Login successful!",
-              user: {
-                  _id: user._id,
-                  name: user.name,
-                  username: user.username,
-                  email: user.email
-              },
-              accessToken,
-              redirectUrl: "/home"
-          });
+      // Store refresh token securely in an HTTP-only cookie
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true, // ✅ important for https
+        sameSite: "None", // ✅ important for cross-domain
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       });
+
+      res.status(200).json({
+        message: "Login successful!",
+        user: {
+          _id: user._id,
+          name: user.name,
+          username: user.username,
+          email: user.email
+        },
+        accessToken,
+        redirectUrl: "/home"
+      });
+    });
   })(req, res, next);
 }
 
 exports.logout = async (req, res) => {
   res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
   });
 
   res.status(200).json({ message: "Logout successful!" });
