@@ -9,7 +9,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendVerificationEmail = (email, token) => {
-  const url = `${process.env.BASE_URL}/verify-email/${token}`;
+  try {
+    const url = `${process.env.BASE_URL}/verify-email/${token}`;
 
   const mailOptions = {
     from: `"Creative 86" <${process.env.EMAIL_USER}>`,
@@ -21,6 +22,10 @@ const sendVerificationEmail = (email, token) => {
   };
 
   return transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw new Error("Failed to send verification email");
+  }
 };
 
 module.exports = sendVerificationEmail;

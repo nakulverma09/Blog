@@ -5,23 +5,28 @@ const User = require("../models/user.js"); // User model ko import karna
 const sendVerificationEmail = require('../utils/mail.js'); // Email utility ko import karna
 
 exports.verifyEmail = async (req, res) => {
-  const { token } = req.params;
-
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_SECRET); // Token ko verify karna
+    const { token } = req.params;
+
+    const decoded = jwt.verify(token, process.env.JWT_EMAIL_SECRET);
     const user = await User.findById(decoded.id);
 
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).send("User not found");
+
+    if (user.isVerified) {
+      return res.redirect(`${process.env.FRONTEND_URL}/login?verified=already`);
+    }
 
     user.isVerified = true;
     await user.save();
 
-    res.json({ message: "Email verified successfully!" });
-    res.redirect(`${process.env.BASE_URL}/login?verified=true`);
+    return res.redirect(`${process.env.FRONTEND_URL}/login?verified=true`);
   } catch (err) {
-    res.status(400).json({ message: 'Invalid or expired token' });
+    console.error("Email verification error:", err.message);
+    return res.redirect(`${process.env.FRONTEND_URL}/login?verified=fail`);
   }
 };
+
 
 exports.signup = async (req, res, next) => {
   try {

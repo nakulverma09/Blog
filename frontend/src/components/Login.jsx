@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSearchParams } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
@@ -10,6 +10,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -24,7 +25,17 @@ const Login = () => {
     }
   };
   
+  useEffect(() => {
+    const verified = searchParams.get("verified");
   
+    if (verified === "true") {
+      alert("✅ Email verified! You can now login.");
+    } else if (verified === "fail") {
+      alert("❌ Verification failed or link expired.");
+    } else if (verified === "already") {
+      alert("ℹ️ Email already verified.");
+    }
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
