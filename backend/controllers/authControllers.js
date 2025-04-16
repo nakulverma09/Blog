@@ -6,9 +6,11 @@ const sendVerificationEmail = require('../utils/mail.js'); // Email utility ko i
 
 exports.verifyEmail = async (req, res) => {
   const token = req.params.token;
+  console.log("verify mail: ", token)
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_EMAIL_SECRET);
+    console.log("decoded token: ", decoded)
     const user = await User.findById(decoded.id);
 
     if (!user) {
