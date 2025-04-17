@@ -1,0 +1,18 @@
+# dependencies
+/node_modules
+
+# env files
+.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# runtime
+/pids
+*.pid
+*.seed
+
+# build or dist folders if you have any
+/dist
