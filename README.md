@@ -2,7 +2,7 @@
 
 Welcome to the **MERN Blog Website** — a full-stack blogging platform where users can register, verify their email, and share their thoughts with the world. Built with 💖 using the MERN stack (MongoDB, Express, React, Node.js), this project is fast, secure, and feature-packed.
 
-![MERN Blog Banner](https://via.placeholder.com/1200x400?text=MERN+Blog+Website)
+![WEBSITE URL](https://blog-frontend-sa3d.onrender.com/home)
 
 ---
 
@@ -37,7 +37,7 @@ Welcome to the **MERN Blog Website** — a full-stack blogging platform where us
 
 ## 📂 Folder Structure
   ### Frontend Highlights: -
-  /src /components → Reusable UI components /pages → Home, Login, Register, Profile, BlogView /utils → Axios instance, auth helpers
+  /src /components → Reusable UI components /pages → Home, other Categories like (Technology, Miscelleaneous etc...) /api → Axios instance, auth helpers /context -> context, authContext
 
   ### Backend Highlights:-
   /routes → Auth, Blog, User APIs /controllers → Logic for each route /models → Mongoose schemas /middleware → Auth, error handling
