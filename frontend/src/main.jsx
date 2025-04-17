@@ -1,204 +1,95 @@
-import { StrictMode } from 'react';
+import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
-import React from "react";
-import Layout from './components/Layout';
-import CodingAndProjects from './pages/CodingAndProjects.jsx';
-import Technology from './pages/Technology.jsx';
-import Home from './pages/Home.jsx';
-import EditBlog from './components/EditBlog.jsx';
-import BlogPage from './components/BlogPage.jsx';
-import { AuthProvider } from './context/AuthContext.jsx';
-import Miscellaneous from './pages/Miscellaneous.jsx';
-import About from './pages/About.jsx';
-import Contact from './pages/Contact.jsx';
-import CultureAndHistory from './pages/CultureAndHistory.jsx';
-import NewsAndCurrentAffairs from './pages/NewsAndCurrentAffairs.jsx';
+} from 'react-router-dom';
+import React from 'react';
 import { MantineProvider } from '@mantine/core';
-import InspirationAndPersonalDevelopment from './pages/InspirationAndPersonalDevelopment.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 import { AppProvider } from './context/context.jsx';
-import Signup from './components/Signup.jsx';
-import Login from './components/Login.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx'; // 👈 Import ProtectedRoute component
-import RedirectIfAuthenticated from './components/RedirectIfAuthenticated.jsx'; // 👈 Import RedirectIfAuthenticated component
-import CreateBlog from './components/CreateBlog.jsx';
-import EducationAndLearning from './pages/EducationAndLearning.jsx';
-import Lifestyle from './pages/Lifestyle.jsx';
-import Finance from './pages/Finance.jsx';
-import Entertainment from './pages/Entertainment.jsx';
-import Profile from './components/Profile.jsx';
-import VerifyEmail from './components/VerifyEmail.jsx';
 
+// 💤 Lazy load components and pages
+const Layout = lazy(() => import('./components/Layout'));
+const CodingAndProjects = lazy(() => import('./pages/CodingAndProjects.jsx'));
+const Technology = lazy(() => import('./pages/Technology.jsx'));
+const Home = lazy(() => import('./pages/Home.jsx'));
+const EditBlog = lazy(() => import('./components/EditBlog.jsx'));
+const BlogPage = lazy(() => import('./components/BlogPage.jsx'));
+const Miscellaneous = lazy(() => import('./pages/Miscellaneous.jsx'));
+const About = lazy(() => import('./pages/About.jsx'));
+const Contact = lazy(() => import('./pages/Contact.jsx'));
+const CultureAndHistory = lazy(() => import('./pages/CultureAndHistory.jsx'));
+const NewsAndCurrentAffairs = lazy(() => import('./pages/NewsAndCurrentAffairs.jsx'));
+const InspirationAndPersonalDevelopment = lazy(() => import('./pages/InspirationAndPersonalDevelopment.jsx'));
+const Signup = lazy(() => import('./components/Signup.jsx'));
+const Login = lazy(() => import('./components/Login.jsx'));
+const ProtectedRoute = lazy(() => import('./components/ProtectedRoute.jsx'));
+const RedirectIfAuthenticated = lazy(() => import('./components/RedirectIfAuthenticated.jsx'));
+const CreateBlog = lazy(() => import('./components/CreateBlog.jsx'));
+const EducationAndLearning = lazy(() => import('./pages/EducationAndLearning.jsx'));
+const Lifestyle = lazy(() => import('./pages/Lifestyle.jsx'));
+const Finance = lazy(() => import('./pages/Finance.jsx'));
+const Entertainment = lazy(() => import('./pages/Entertainment.jsx'));
+const Profile = lazy(() => import('./components/Profile.jsx'));
+const VerifyEmail = lazy(() => import('./components/VerifyEmail.jsx'));
+
+// 🛣️ Define routes
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Layout />, 
+    path: '/',
+    element: <Layout />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: '', element: <Home /> },
+      { path: 'technology', element: <Technology /> },
+      { path: 'coding-and-projects', element: <CodingAndProjects /> },
+      { path: 'miscellaneous', element: <Miscellaneous /> },
+      { path: 'about', element: <About /> },
+      { path: 'contact', element: <Contact /> },
+      { path: 'culture-and-history', element: <CultureAndHistory /> },
+      { path: 'news-and-current-affairs', element: <NewsAndCurrentAffairs /> },
+      { path: 'inspiration-and-personal-development', element: <InspirationAndPersonalDevelopment /> },
+      { path: 'education-and-learning', element: <EducationAndLearning /> },
+      { path: 'lifestyle', element: <Lifestyle /> },
+      { path: 'finance', element: <Finance /> },
+      { path: 'entertainment', element: <Entertainment /> },
+      { path: 'verify-email/:token', element: <VerifyEmail /> },
+      { path: 'blog/:id', element: <BlogPage /> },
       {
-        path: "/home",
-        element: (
-            <Home />
-        ),
+        path: 'profile',
+        element: <ProtectedRoute><Profile /></ProtectedRoute>
       },
       {
-        path: "/technology",
-        element: (
-          <ProtectedRoute>
-            <Technology />
-          </ProtectedRoute>
-        ),
+        path: 'create-blog',
+        element: <ProtectedRoute><CreateBlog /></ProtectedRoute>
       },
       {
-        path: "/education-learning",
-        element: (
-          <ProtectedRoute>
-            <EducationAndLearning />
-          </ProtectedRoute>
-        ),
+        path: 'edit-blog/:id',
+        element: <ProtectedRoute><EditBlog /></ProtectedRoute>
       },
       {
-        path: "/lifestyle",
-        element: (
-          <ProtectedRoute>
-            <Lifestyle />
-          </ProtectedRoute>
-        ),
+        path: 'signup',
+        element: <RedirectIfAuthenticated><Signup /></RedirectIfAuthenticated>
       },
       {
-        path: "/finance",
-        element: (
-          <ProtectedRoute>
-            <Finance/>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/entertainment",
-        element: (
-          <ProtectedRoute>
-            <Entertainment />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/news-current-affairs",
-        element: (
-          <ProtectedRoute>
-            <NewsAndCurrentAffairs />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/inspiration-personal-development",
-        element: (
-          <ProtectedRoute>
-            <InspirationAndPersonalDevelopment />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/miscellaneous",
-        element: (
-          <ProtectedRoute>
-            <Miscellaneous />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/coding-projects",
-        element: (
-          <ProtectedRoute>
-            <CodingAndProjects />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/culture-history",
-        element: (
-          <ProtectedRoute>
-            <CultureAndHistory />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/news-current-affairs",
-        element: (
-          <ProtectedRoute>
-            <NewsAndCurrentAffairs />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/create-blog",
-        element: (
-          <ProtectedRoute>
-            <CreateBlog />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/user/profile/:id",
-        element: (
-            <Profile />
-        ),
-      },
-      {
-        path: "/blog/:id",
-        element: (
-          <ProtectedRoute>
-            <BlogPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/edit/blog/:id",
-        element: (
-          <ProtectedRoute>
-            <EditBlog />
-          </ProtectedRoute>
-        ),
-      },
-      { path: "/about", element: <About /> },
-      { path: "/contact", element: <Contact /> },
-      {
-        path: "/signup",
-        element: (
-          <RedirectIfAuthenticated>
-            <Signup />
-          </RedirectIfAuthenticated>
-        ),
-      },
-      {
-        path: "/login",
-        element: (
-          <RedirectIfAuthenticated>
-            <Login />
-          </RedirectIfAuthenticated>
-        ),
-      },
-      {
-        path: "/verify-email/:token",
-        element: (
-          <VerifyEmail/>
-        ),
+        path: 'login',
+        element: <RedirectIfAuthenticated><Login /></RedirectIfAuthenticated>
       }
-    ],
-  },
+    ]
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <MantineProvider withGlobalStyles withNormalizeCSS>
-    <AppProvider>
       <AuthProvider>
-      <RouterProvider router={router} />
+        <AppProvider>
+          <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
+            <RouterProvider router={router} />
+          </Suspense>
+        </AppProvider>
       </AuthProvider>
-    </AppProvider>
     </MantineProvider>
   </StrictMode>
 );
