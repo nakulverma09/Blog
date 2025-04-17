@@ -42,17 +42,3 @@ Welcome to the **MERN Blog Website** — a full-stack blogging platform where us
   ### Backend Highlights:-
   /routes → Auth, Blog, User APIs /controllers → Logic for each route /models → Mongoose schemas /middleware → Auth, error handling
 
-
----
-
-## ⚙️ Getting Started
-
-### 1. Clone the repo
-
-```bash
-git clone 
-cd mern-blog-website
-
-
-
-
