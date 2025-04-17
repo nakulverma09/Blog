@@ -2,7 +2,7 @@
 
 Welcome to the **MERN Blog Website** — a full-stack blogging platform where users can register, verify their email, and share their thoughts with the world. Built with 💖 using the MERN stack (MongoDB, Express, React, Node.js), this project is fast, secure, and feature-packed.
 
-![WEBSITE URL](https://blog-frontend-sa3d.onrender.com/home)
+WEBSITE URL - https://blog-frontend-sa3d.onrender.com
 
 ---
 
