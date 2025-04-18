@@ -57,23 +57,23 @@ const router = createBrowserRouter([
       { path: '/verify-email/:token', element: <VerifyEmail /> },
       { path: '/blog/:id', element: <BlogPage /> },
       {
-        path: 'profile',
+        path: '/profile',
         element: <ProtectedRoute><Profile /></ProtectedRoute>
       },
       {
-        path: 'create-blog',
+        path: '/create-blog',
         element: <ProtectedRoute><CreateBlog /></ProtectedRoute>
       },
       {
-        path: 'edit-blog/:id',
+        path: '/edit-blog/:id',
         element: <ProtectedRoute><EditBlog /></ProtectedRoute>
       },
       {
-        path: 'signup',
+        path: '/signup',
         element: <RedirectIfAuthenticated><Signup /></RedirectIfAuthenticated>
       },
       {
-        path: 'login',
+        path: '/login',
         element: <RedirectIfAuthenticated><Login /></RedirectIfAuthenticated>
       }
     ]
