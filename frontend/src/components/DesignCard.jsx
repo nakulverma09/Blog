@@ -35,7 +35,7 @@ const DesignCard = ({ blog }) => {
             to={`/user/profile/${blog?.user?._id}`}
             className="hover:text-blue-700"
           >
-            {blog.user.username}
+            {blog?.user?.username}
           </Link>
         </span>
         /
