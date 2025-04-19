@@ -23,10 +23,9 @@ const EmailInput = () => {
       setEmail(""); // Clear the input field on success
       alert("Subscription successful!"); // Show success message
     } catch (error) {
-      alert(error.response?.data)
-      console.log(error.response?.data)
+      alert(JSON.stringify(error.response?.data || error.message)); // more readable
       console.error("Error subscribing:", error.response?.data || error.message);
-    }
+    }    
   };
 
   return (
