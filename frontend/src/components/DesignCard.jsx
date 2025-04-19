@@ -16,6 +16,7 @@ const DesignCard = ({ blog }) => {
   return (
     <div className="w-full flex flex-col items-start justify-between border-b border-gray-300 py-4 px-2 hover:bg-gray-50 transition duration-200">
       {/* Blog Title */}
+      {console.log(blog._id)}
       <Link to={`/blog/${blog._id}`}>
         <h1 className="text-2xl font-semibold text-blue-800 hover:underline mb-2">
           {blog.title}
