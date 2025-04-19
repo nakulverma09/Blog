@@ -71,6 +71,10 @@ const router = createBrowserRouter([
         element: <ProtectedRoute><EditBlog /></ProtectedRoute>
       },
       {
+        path: '/user/profile/:id',
+        element: <ProtectedRoute><Profile /></ProtectedRoute>
+      },
+      {
         path: '/signup',
         element: <RedirectIfAuthenticated><Signup /></RedirectIfAuthenticated>
       },
