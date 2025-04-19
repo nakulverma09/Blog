@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const DesignCard = ({ blog }) => {
   // Convert HTML content to plain text for preview
   const plainText = blog.content.replace(/<[^>]+>/g, "");
   const previewText = plainText.split(" ").slice(0, 20).join(" ");
+
+  useEffect(() => {
+    console.log("Design Card")
+    console.log("Design Card Blog data- ", blog)
+  }, [])
 
   // Format the date
   const formattedDate = new Date(blog.createdAt).toLocaleDateString("en-US", {
@@ -17,7 +22,7 @@ const DesignCard = ({ blog }) => {
     <div className="w-full flex flex-col items-start justify-between border-b border-gray-300 py-4 px-2 hover:bg-gray-50 transition duration-200">
       {/* Blog Title */}
       {console.log(blog._id)}
-      <Link to={`/blog/${blog._id}`}>
+      <Link to={`/blog/${blog?._id}`}>
         <h1 className="text-2xl font-semibold text-blue-800 hover:underline mb-2">
           {blog.title}
         </h1>
@@ -27,7 +32,7 @@ const DesignCard = ({ blog }) => {
       <div className="text-sm text-gray-600 mb-2 flex flex-wrap gap-x-2">
         <span>
           <Link
-            to={`/user/profile/${blog.user._id}`}
+            to={`/user/profile/${blog?.user?._id}`}
             className="hover:text-blue-700"
           >
             {blog.user.username}
