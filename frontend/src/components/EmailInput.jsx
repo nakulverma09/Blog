@@ -24,6 +24,7 @@ const EmailInput = () => {
       alert("Subscription successful!"); // Show success message
     } catch (error) {
       alert(error.response?.data || error.message)
+      console.log(error)
       console.error("Error subscribing:", error.response?.data || error.message);
     }
   };
