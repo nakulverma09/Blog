@@ -15,6 +15,7 @@ const Technology = () => {
             Authorization: `Bearer ${token}`
           }
         })
+        console.log(response.data.data)
         setBlogs(response.data.data) // Make sure your backend sends { data: [...] }
       } catch (error) {
         console.error("Error fetching blogs:", error)
