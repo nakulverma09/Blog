@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DesignCard from "./DesignCard";
 
 const DesignLayout = ({heading, blogs}) => {
+  useEffect(() => {
+    console.log("design layout")
+  },[])
+
   return (
     <div className="bg-white w-full flex flex-col py-10 px-6 sm:px-10 lg:px-20">
       {/* Title Section */}
