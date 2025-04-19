@@ -26,7 +26,7 @@ const Technology = () => {
 
   return (
     <>
-      {(!blogs || blogs.length === 0) ? (
+      {blogs.length === 0 ? (
         <NoPosts />
       ) : (
         <div>
