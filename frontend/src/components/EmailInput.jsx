@@ -23,8 +23,8 @@ const EmailInput = () => {
       setEmail(""); // Clear the input field on success
       alert("Subscription successful!"); // Show success message
     } catch (error) {
-      alert(JSON.stringify(error.response?.data || error.message)); // more readable
-      console.error("Error subscribing:", error.response?.data || error.message);
+      alert(JSON.stringify(error.response?.data?.message || error.message)); // more readable
+      console.error("Error subscribing:", error.response?.data?.message || error.message);
     }    
   };
 
