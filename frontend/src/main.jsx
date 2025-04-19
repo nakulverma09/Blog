@@ -11,6 +11,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import { AppProvider } from './context/context.jsx';
 
 // 💤 Lazy load components and pages
+const Loader = lazy(() => import('./components/Loader.jsx'))
 const Layout = lazy(() => import('./components/Layout'));
 const CodingAndProjects = lazy(() => import('./pages/CodingAndProjects.jsx'));
 const Technology = lazy(() => import('./pages/Technology.jsx'));
@@ -86,7 +87,7 @@ createRoot(document.getElementById('root')).render(
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <AuthProvider>
         <AppProvider>
-          <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
+          <Suspense fallback={<Loader/>}>
             <RouterProvider router={router} />
           </Suspense>
         </AppProvider>
